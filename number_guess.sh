@@ -5,7 +5,8 @@ echo "Enter your username:"
 read USERNAME
 if [[ ${#USERNAME} -gt 22 ]]
 then
-  echo "22 symbols MAX"
+  #echo "22 symbols MAX"
+  test="we can echo something there"
 else
   #check if username exists
   USER_INFO=$($PSQL "SELECT * FROM usernames WHERE username='$USERNAME';")
@@ -40,7 +41,6 @@ else
       echo "It's higher than that, guess again:"
       COUNT=$(( $COUNT + 1 ))
     else
-      echo "You guessed it in $COUNT tries. The secret number was $SECRET. Nice job!"
       FOUND=true
     fi
   fi
@@ -53,9 +53,10 @@ else
   else 
     if [[ $COUNT -lt $BEST_SCORE ]]
     then
-    CHANGE_USER=$($PSQL "UPDATE usernames SET games_played=$GAMES_PLAYED, best_score=$COUNT WHERE username_id=$USERNAME_ID;")
+      CHANGE_USER=$($PSQL "UPDATE usernames SET games_played=$GAMES_PLAYED, best_score=$COUNT WHERE username_id=$USERNAME_ID;")
     else
-    CHANGE_USER=$($PSQL "UPDATE usernames SET games_played=$GAMES_PLAYED WHERE username_id=$USERNAME_ID;")
+      CHANGE_USER=$($PSQL "UPDATE usernames SET games_played=$GAMES_PLAYED WHERE username_id=$USERNAME_ID;")
     fi
   fi
+  echo "You guessed it in $COUNT tries. The secret number was $SECRET. Nice job!"
 fi
